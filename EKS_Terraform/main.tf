@@ -6,7 +6,7 @@ resource "aws_vpc" "devopsshack_vpc-1" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "devopsshack-vpc"
+    Name = "devopsshack-vpc-1"
   }
 }
 
@@ -88,7 +88,7 @@ resource "aws_security_group" "devopsshack_node_sg" {
 
 resource "aws_eks_cluster" "devopsshack" {
   name     = "devopsshack-cluster-new"
-  role_arn = aws_iam_role.devopsshack_cluster_role.arn
+  role_arn = aws_iam_role.devopsshack_cluster_role-new.arn
 
   vpc_config {
     subnet_ids         = aws_subnet.devopsshack_subnet[*].id
