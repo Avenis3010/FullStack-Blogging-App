@@ -87,7 +87,7 @@ resource "aws_security_group" "devopsshack_node_sg" {
 }
 
 resource "aws_eks_cluster" "devopsshack" {
-  name     = "devopsshack-cluster"
+  name     = "devopsshack-cluster-new"
   role_arn = aws_iam_role.devopsshack_cluster_role.arn
 
   vpc_config {
@@ -141,7 +141,7 @@ resource "aws_iam_role_policy_attachment" "devopsshack_cluster_role_policy" {
 }
 
 resource "aws_iam_role" "devopsshack_node_group_role" {
-  name = "devopsshack-node-group-role"
+  name = "devopsshack-node-group-role-new"
 
   assume_role_policy = <<EOF
 {
