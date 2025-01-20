@@ -2,7 +2,7 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-resource "aws_vpc" "devopsshack_vpc" {
+resource "aws_vpc" "devopsshack_vpc-1" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
@@ -12,8 +12,8 @@ resource "aws_vpc" "devopsshack_vpc" {
 
 resource "aws_subnet" "devopsshack_subnet" {
   count = 2
-  vpc_id                  = aws_vpc.devopsshack_vpc.id
-  cidr_block              = cidrsubnet(aws_vpc.devopsshack_vpc.cidr_block, 8, count.index)
+  vpc_id                  = aws_vpc.devopsshack_vpc-1.id
+  cidr_block              = cidrsubnet(aws_vpc.devopsshack_vpc-1.cidr_block, 8, count.index)
   availability_zone       = element(["ap-south-1a", "ap-south-1b"], count.index)
   map_public_ip_on_launch = true
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "devopsshack_subnet" {
 }
 
 resource "aws_internet_gateway" "devopsshack_igw" {
-  vpc_id = aws_vpc.devopsshack_vpc.id
+  vpc_id = aws_vpc.devopsshack_vpc-1.id
 
   tags = {
     Name = "devopsshack-igw"
@@ -31,7 +31,7 @@ resource "aws_internet_gateway" "devopsshack_igw" {
 }
 
 resource "aws_route_table" "devopsshack_route_table" {
-  vpc_id = aws_vpc.devopsshack_vpc.id
+  vpc_id = aws_vpc.devopsshack_vpc-1.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -50,7 +50,7 @@ resource "aws_route_table_association" "a" {
 }
 
 resource "aws_security_group" "devopsshack_cluster_sg" {
-  vpc_id = aws_vpc.devopsshack_vpc.id
+  vpc_id = aws_vpc.devopsshack_vpc-1.id
 
   egress {
     from_port   = 0
@@ -65,7 +65,7 @@ resource "aws_security_group" "devopsshack_cluster_sg" {
 }
 
 resource "aws_security_group" "devopsshack_node_sg" {
-  vpc_id = aws_vpc.devopsshack_vpc.id
+  vpc_id = aws_vpc.devopsshack_vpc-1.id
 
   ingress {
     from_port   = 0
@@ -98,7 +98,7 @@ resource "aws_eks_cluster" "devopsshack" {
 
 resource "aws_eks_node_group" "devopsshack" {
   cluster_name    = aws_eks_cluster.devopsshack.name
-  node_group_name = "devopsshack-node-group"
+  node_group_name = "devopsshack-node-group-new"
   node_role_arn   = aws_iam_role.devopsshack_node_group_role.arn
   subnet_ids      = aws_subnet.devopsshack_subnet[*].id
 
@@ -116,7 +116,7 @@ resource "aws_eks_node_group" "devopsshack" {
   }
 }
 
-resource "aws_iam_role" "devopsshack_cluster_role" {
+resource "aws_iam_role" "devopsshack_cluster_role-new" {
   name = "devopsshack-cluster-role-new"
 
   assume_role_policy = <<EOF
@@ -136,7 +136,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "devopsshack_cluster_role_policy" {
-  role       = aws_iam_role.devopsshack_cluster_role.name
+  role       = aws_iam_role.devopsshack_cluster_role-new.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
