@@ -6,7 +6,7 @@ resource "aws_vpc" "devopsshack_vpc-1" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "devopsshack-vpc-1"
+    Name = "devopsshack_vpc_1"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "devopsshack_subnet" {
 }
 
 resource "aws_internet_gateway" "devopsshack_igw" {
-  vpc_id = aws_vpc.devopsshack_vpc-1.id
+  vpc_id = aws_vpc.devopsshack_vpc_1.id
 
   tags = {
     Name = "devopsshack-igw"
@@ -31,7 +31,7 @@ resource "aws_internet_gateway" "devopsshack_igw" {
 }
 
 resource "aws_route_table" "devopsshack_route_table" {
-  vpc_id = aws_vpc.devopsshack_vpc-1.id
+  vpc_id = aws_vpc.devopsshack_vpc_1.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -50,7 +50,7 @@ resource "aws_route_table_association" "a" {
 }
 
 resource "aws_security_group" "devopsshack_cluster_sg" {
-  vpc_id = aws_vpc.devopsshack_vpc-1.id
+  vpc_id = aws_vpc.devopsshack_vpc_1.id
 
   egress {
     from_port   = 0
@@ -65,7 +65,7 @@ resource "aws_security_group" "devopsshack_cluster_sg" {
 }
 
 resource "aws_security_group" "devopsshack_node_sg" {
-  vpc_id = aws_vpc.devopsshack_vpc-1.id
+  vpc_id = aws_vpc.devopsshack_vpc_1.id
 
   ingress {
     from_port   = 0
